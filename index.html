@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SFHand — Predictive Representation Learning via Streaming Egocentric 3D Hand Forecasting</title>
+<meta name="description" content="SFHand learns manipulation representations by forecasting 3D human hands from a streaming egocentric video and a language instruction. CoRL 2026.">
+<meta property="og:title" content="SFHand: Predictive Representation Learning for Manipulation">
+<meta property="og:description" content="Forecast human hands. Learn to manipulate. CoRL 2026.">
+<meta property="og:image" content="static/images/demo_poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#"><span class="dot"></span>SFHand</a>
+    <div class="nav-links">
+      <a href="#real"><b>01</b>Real robot</a>
+      <a href="#sim"><b>02</b>Simulation</a>
+      <a href="#method"><b>03</b>Method</a>
+      <a href="#forecast"><b>04</b>Forecasting</a>
+      <a href="#data"><b>05</b>Dataset</a>
+      <a href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="kicker">CoRL 2026 · Austin, TX</span>
+    <h1>SF<span>Hand</span></h1>
+    <p class="title">Predictive Representation Learning for Manipulation via Streaming Egocentric 3D Hand Forecasting</p>
+    <p class="tag">Forecast human hands. Learn to manipulate.</p>
+    <p class="authors">
+      Ruicong Liu, Yifei Huang, Liangyang Ouyang, Caixin Kang, Yoichi Sato
+    </p>
+    <p class="affil">Institute of Industrial Science, The University of Tokyo</p>
+    <div class="btns">
+      <a class="btn primary" href="https://arxiv.org/pdf/2511.18127" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>Paper
+      </a>
+      <a class="btn" href="https://github.com/ut-vision/SFHand" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.75.11 3.04.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>Code
+      </a>
+      <a class="btn" href="https://github.com/ut-vision/SFHand" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>EgoHaFL dataset
+      </a>
+    </div>
+
+    <div class="hero-media">
+      <video src="static/videos/demo.mp4" autoplay muted loop playsinline controls poster="static/images/demo_poster.jpg"></video>
+    </div>
+    <div class="hero-caption">
+      <span>Overview video: real-robot and simulation results, the forecasting objective, and streaming 3D hand forecasting.</span>
+      <span>80 s · no audio</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="n">+13.4%</div><div class="l">average success rate over the previous best on Adroit dexterous-hand tasks</div></div>
+      <div class="stat"><div class="n">72.0%</div><div class="l">real-robot success rate across five tasks, +10.0% over the strongest baseline</div></div>
+      <div class="stat"><div class="n">−35.8%</div><div class="l">ADE in 3D hand forecasting compared with baseline forecasting methods</div></div>
+      <div class="stat"><div class="n">33 FPS</div><div class="l">streaming inference with multimodal encoders and autoregressive decoding</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- 01 REAL ROBOT -->
+<section id="real" style="padding-top:64px">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">01 / REAL ROBOT</div>
+      <div>
+        <h2>Transfers to a physical Franka Research 3</h2>
+        <p>A frozen SFHand encoder with a small policy head, trained from 30 demonstrations per task and evaluated with randomized object placement.</p>
+      </div>
+    </div>
+    <div class="two real reveal">
+      <div class="clip wide"><video src="static/videos/robot.mp4" autoplay muted loop playsinline></video><span class="lbl">Open drawer <small>· FR3, randomized placement</small></span></div>
+      <div class="panel pad">
+        <div class="tbl-wrap">
+          <table class="res">
+            <thead><tr><th>Method</th><th>Pick-place</th><th>Drawer</th><th>Microwave</th><th>Switch</th><th>Pour</th><th>Avg.</th></tr></thead>
+            <tbody>
+              <tr><td>MPI</td><td>83.3</td><td>70.0</td><td>63.3</td><td>50.0</td><td>43.3</td><td>62.0</td></tr>
+              <tr><td>EgoHOD</td><td>83.3</td><td>73.3</td><td>66.7</td><td>53.3</td><td>50.0</td><td>65.3</td></tr>
+              <tr class="ours"><td>SFHand</td><td>86.7</td><td>76.7</td><td>70.0</td><td>63.3</td><td>63.3</td><td>72.0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tbl-note">Mean success rate (%) over 3 seeds × 10 rollouts.</div>
+              </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 SIMULATION -->
+<section id="sim">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">02 / SIMULATION</div>
+      <div>
+        <h2>Franka Kitchen and Adroit</h2>
+        <p>The same frozen SFHand encoder drives a gripper in Franka Kitchen and a dexterous hand in Adroit. A lightweight policy head is trained per task on top of the representation; the encoder is never fine-tuned.</p>
+      </div>
+    </div>
+    <div class="clips c5 reveal">
+      <div class="clip"><video src="static/videos/clip31.mp4" autoplay muted loop playsinline></video><span class="lbl">Turn knob <small>· Franka</small></span></div>
+      <div class="clip"><video src="static/videos/clip30.mp4" autoplay muted loop playsinline></video><span class="lbl">Slide door <small>· Franka</small></span></div>
+      <div class="clip"><video src="static/videos/clip29.mp4" autoplay muted loop playsinline></video><span class="lbl">Open microwave <small>· Franka</small></span></div>
+      <div class="clip"><video src="static/videos/clip32.mp4" autoplay muted loop playsinline></video><span class="lbl">Relocate ball <small>· Adroit</small></span></div>
+      <div class="clip"><video src="static/videos/clip33.mp4" autoplay muted loop playsinline></video><span class="lbl">Reorient pen <small>· Adroit</small></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 METHOD -->
+<section id="method">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">03 / METHOD</div>
+      <div>
+        <h2>Learn to manipulate by forecasting 3D hands</h2>
+        <p>SFHand takes a streaming egocentric video, a language instruction and the current 3D hand state, and autoregressively forecasts the next hand state: hand type, 2D box, 3D pose and trajectory. An ROI-enhanced memory layer keeps a queue of past embeddings and focuses attention on the hand region. Forecasting forces the representation to learn both how humans manipulate objects and how the motion unfolds next.</p>
+      </div>
+    </div>
+    <div class="figure reveal">
+      <img src="static/images/fig2.png" alt="SFHand architecture overview">
+    </div>
+  </div>
+</section>
+
+<!-- 04 FORECASTING -->
+<section id="forecast">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">04 / FORECASTING</div>
+      <div>
+        <h2>Streaming 3D hand forecasting</h2>
+        <p>White hands are forecasted by SFHand from previous frames and hand states only. No future frame is observed.</p>
+      </div>
+    </div>
+    <div class="clips c3 reveal">
+      <div class="clip"><video src="static/videos/clip26.mp4" autoplay muted loop playsinline></video></div>
+      <div class="clip"><video src="static/videos/clip27.mp4" autoplay muted loop playsinline></video></div>
+      <div class="clip"><video src="static/videos/clip28.mp4" autoplay muted loop playsinline></video></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DATASET -->
+<section id="data">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">05 / DATASET</div>
+      <div>
+        <h2>EgoHaFL: egocentric 3D hands with fine-grained language</h2>
+        <p>The first open-source large-scale dataset pairing synchronized 3D hand poses with sentence-level language instructions, pre-segmented into short clips for forecasting.</p>
+      </div>
+    </div>
+    <div class="dstats reveal">
+      <div class="stat"><div class="n">247K</div><div class="l">clips</div></div>
+      <div class="stat"><div class="n">3.95M</div><div class="l">annotated frames</div></div>
+      <div class="stat"><div class="n">3D</div><div class="l">hand pose, 2D box and trajectory per frame</div></div>
+      <div class="stat"><div class="n">Fine</div><div class="l">sentence-level language instructions</div></div>
+    </div>
+    <div class="figure reveal">
+      <img src="static/images/EgoHaFL.gif" alt="EgoHaFL dataset samples" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- BIBTEX -->
+<section id="bibtex">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-num">CITE</div>
+      <div><h2>BibTeX</h2></div>
+    </div>
+    <pre class="bib reveal"><button class="copy" onclick="copyBib(this)">Copy</button><code id="bibcode">@inproceedings{liu2026sfhand,
+  <span class="k">title</span>     = <span class="v">{Predictive Representation Learning for Manipulation via Streaming Egocentric 3D Hand Forecasting}</span>,
+  <span class="k">author</span>    = <span class="v">{Liu, Ruicong and Huang, Yifei and Ouyang, Liangyang and Kang, Caixin and Sato, Yoichi}</span>,
+  <span class="k">booktitle</span> = <span class="v">{Conference on Robot Learning (CoRL)}</span>,
+  <span class="k">year</span>      = <span class="v">{2026}</span>
+}</code></pre>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>SFHand · The University of Tokyo · CoRL 2026</span>
+    <span>Contact: <a href="mailto:lruicong@iis.u-tokyo.ac.jp">lruicong@iis.u-tokyo.ac.jp</a> · <a href="mailto:hyf@iis.u-tokyo.ac.jp">hyf@iis.u-tokyo.ac.jp</a></span>
+  </div>
+</footer>
+
+<script>
+  // reveal on scroll
+  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  // play clips only when visible
+  const vo = new IntersectionObserver((es) => es.forEach(e => { const v = e.target; if (e.isIntersecting) { v.play().catch(() => {}); } else { v.pause(); } }), { rootMargin: '200px 0px' });
+  document.querySelectorAll('video[autoplay]').forEach(v => vo.observe(v));
+  // nav highlight
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  const so = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { links.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#' + e.target.id)); } }), { rootMargin: '-40% 0px -55% 0px' });
+  secs.forEach(s => s && so.observe(s));
+  function copyBib(btn) {
+    navigator.clipboard.writeText(document.getElementById('bibcode').innerText).then(() => { btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy', 1500); });
+  }
+</script>
+</body>
+</html>
