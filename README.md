@@ -13,7 +13,7 @@ python3 -m http.server 8765 --directory .
 
 ## Things to fill in before publishing
 
-- The **EgoHaFL dataset** button currently points to the code repository.
+- The **EgoHaFL dataset** button points to https://huggingface.co/datasets/ut-vision/EgoHaFL.
 - `static/videos/demo.mp4` is the 80-second overview video shown in the hero (7 MB). Replace it if you re-cut the video.
 
 ## Layout
